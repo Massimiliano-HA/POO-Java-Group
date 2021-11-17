@@ -1,20 +1,24 @@
-package com.company;
+package fr.coding.characters;
 
-class Archetype {
-    private String name;
-    private int damage;
-    private int life;
-    private int initiative;
+public class Archetype {
+    public String name;
+    public float damage = 20.f;
+    public float life = 100.f;
+    public int initiative= 10;
 
     public String getName() {
         return name;
     }
 
-    public int getDamage() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public float getDamage() {
         return damage;
     }
 
-    public int getLife() {
+    public float getLife() {
         return life;
     }
 
@@ -23,8 +27,9 @@ class Archetype {
     }
 
     public void damageMe(int damage) {
-      life -= damage;
+        life -= damage;
     }
+
 
     public String toString() {
         return "Archetype{" +
@@ -34,16 +39,4 @@ class Archetype {
                 ", initiative=" + initiative +
                 '}';
     }
-}
-
-class Wizard extends Archetype {
-
-}
-
-class Thief extends Archetype {
-
-}
-
-class Warrior extends Archetype {
-
 }
