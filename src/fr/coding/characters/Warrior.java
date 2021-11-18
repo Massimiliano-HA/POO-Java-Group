@@ -7,12 +7,13 @@ public class Warrior extends Archetype {
         return shield;
     }
 
-    public float getDamage() {
+    public float getDamage(int defaultVar) {
+
         return damage;
     }
 
     public void damageMe(int damage) {
-        life -= damage - shield;
+        life -= (damage - getShield());
     }
 
 

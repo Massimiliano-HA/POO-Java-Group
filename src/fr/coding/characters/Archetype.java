@@ -4,7 +4,22 @@ public class Archetype {
     public String name;
     public float damage = 20.f;
     public float life = 100.f;
+    public float magical_damage = 10.f;
+
+    public float default_damage = 20.f;
+    public float default_life = 100.f;
+    public float default_magical_damage = 10.f;
+
     public int initiative= 10;
+    public String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getName() {
         return name;
@@ -14,7 +29,7 @@ public class Archetype {
         this.name = name;
     }
 
-    public float getDamage() {
+    public float getDamage(int defaultVar) {
         return damage;
     }
 
