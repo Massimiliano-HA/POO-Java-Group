@@ -5,10 +5,11 @@ import java.util.*;
 
 public class Main
 {
-    static Settings settings = new Settings();
-    static Scanner scanner = new Scanner(System.in);
+    static Settings settings = new Settings(); //Object from Setting bcz it is used many times
+    static Scanner scanner = new Scanner(System.in); //same
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         System.out.println("Application has started !");
 
         menu();
@@ -25,50 +26,86 @@ public class Main
         System.out.println("| 3. Settings  |");
         System.out.println("----------------");
 
-        while (menuChoose < 1 || menuChoose > 3) {
+        while (menuChoose < 1 || menuChoose > 3)  //wrong input
+        {
             System.out.print("-> ");
 
             menuChoose = scanner.nextInt(); // Getting the number entered
         }
 
+        System.out.println();
+
         while (!settings.end) // While the game is not ended or quit
         {
-           if (menuChoose == 1)
-           {
-               int playerChoose = 0;
+           if (menuChoose == 1) {
 
-               System.out.println();
-               System.out.println("------------------------------------------");
-               System.out.println("| Choose the first number's character :  |");
-               System.out.println("| 1. Warrior                             |");
-               System.out.println("| 2. Wizard                              |");
-               System.out.println("| 3. Thief                               |");
-               System.out.println("------------------------------------------");
-               while (playerChoose < 1 || playerChoose > 3)
+               System.out.println("---------------------------");
+               System.out.println("| 1. Play                 |");
+               System.out.println("| 2. Create charactere    |");
+               System.out.println("| 3. Return to main menu  |");
+               System.out.println("---------------------------");
+
+               menuChoose = 0;
+               while (menuChoose < 1 || menuChoose > 3)  //wrong input
                {
                    System.out.print("-> ");
 
-                   playerChoose = scanner.nextInt();
+                   menuChoose = scanner.nextInt(); // Getting the number entered
                }
 
-               createCharacter(playerChoose);
-
-               playerChoose = 0;
-
-               System.out.println();
-               System.out.println("-------------------------------------------");
-               System.out.println("| Choose the second number's character :  |");
-               System.out.println("-------------------------------------------");
-               while (playerChoose < 1  || playerChoose > 3) {
-                   System.out.print("-> ");
-
-                   playerChoose = scanner.nextInt();
+               if (menuChoose == 2) {
+                   chooseCharacter();
+                   menu();
                }
 
-               createCharacter(playerChoose);
+               if (menuChoose == 1) {
+                   int p1 =0;
+                   int p2=1;
+                   if (settings.archetypeList.size() == 0) {
+                       chooseCharacter();
+                       chooseCharacter();
+                   }
 
-               fight(settings.archetypeList.get(0), settings.archetypeList.get(1));
+                   if (settings.archetypeList.size() == 1) {
+                       chooseCharacter();
+                   }
+
+                   if(settings.archetypeList.size() >2){
+                       for(int i = 0; i < settings.archetypeList.size(); i++) {
+                           System.out.print(i + 1 + " ");
+                           System.out.println(settings.archetypeList.get(i));
+                       }
+                           int playerChoose = 0;
+                           System.out.println("choose the first player");
+                           while (playerChoose < 0 || playerChoose > settings.archetypeList.size())
+                           {
+                               System.out.print("-> ");
+                               playerChoose = scanner.nextInt()-1; // Getting the number entered
+                           }
+                            p1 = playerChoose;
+                           System.out.println("choose the second player");
+                           playerChoose = 0;
+                           while (playerChoose < 0 || playerChoose > settings.archetypeList.size())
+                           {
+                               System.out.print("-> ");
+                               playerChoose = scanner.nextInt()-1; // Getting the number entered
+                           }
+                           p2 = playerChoose;
+
+                   }
+                   if (settings.archetypeList.size()<=2){
+                       p1 = 0;
+                       p2 = 1;
+                   }
+
+                   fight(settings.archetypeList.get(p1), settings.archetypeList.get(p2));
+               }
+
+
+
+
            }
+
 
            else if (menuChoose == 2) {
                settings.end = true;
@@ -82,10 +119,33 @@ public class Main
 
 /**----------    instance player  ----------**/
 
-   static void createCharacter(int playerChoose) {
+static void chooseCharacter(){
+    int playerChoose = 0;
+
+    System.out.println();
+    System.out.println("------------------------------------------");
+    System.out.println("| Choose the first number's character :  |");
+    System.out.println("| 1. Warrior                             |");
+    System.out.println("| 2. Wizard                              |");
+    System.out.println("| 3. Thief                               |");
+    System.out.println("------------------------------------------");
+
+    while (playerChoose < 1 || playerChoose > 3)
+    {
+        System.out.print("-> ");
+
+        playerChoose = scanner.nextInt();
+    }
+
+    createCharacter(playerChoose);
+
+}
+   static void createCharacter(int playerChoose)
+   {
        if (playerChoose == 1)
        {
-           Archetype warrior = new Warrior();
+           Warrior warrior = new Warrior();
+
            settings.archetypeList.add(warrior);
 
            warrior.setType("Warrior");
@@ -118,26 +178,31 @@ public class Main
 
 /*-------------  SkillCharacter   ---------------*/
 
-    static void createName(Archetype archetype) {
+    static void createName(Archetype archetype)
+    {
         System.out.println();
         System.out.println("-----------------------------");
         System.out.println("| Choose the player name :  |");
         System.out.println("-----------------------------");
         archetype.setName(new Scanner(System.in).nextLine()); //Setting-up the name of the player
+
+        System.out.println();
    }
 
    /**-------------      Fight     --------------**/
 
-  static void fight(Archetype p1, Archetype p2)
+  static void fight(Archetype p1, Archetype p2) //fight player 1 versus player 2
   {
       System.out.println();
       System.out.println("-------------------");
       System.out.println("| 1. Start game   |");
       System.out.println("| 2. Quit         |");
       System.out.println("-------------------");
+
       int start = 0;
 
-      while (start < 1 || start > 2) {
+      while (start < 1 || start > 2)  //wrong input
+      {
           System.out.print("-> ");
           start = scanner.nextInt();
       }
@@ -148,63 +213,83 @@ public class Main
       {
           System.out.println("------------------------Start the fight--------------------------");
 
-          int leadPlayer = 0;
-          int initP1 = p1.getInitiative();
-          int initP2 = p2.getInitiative();
+          int leadPlayer = 0;  // choose starter
+          int initP1 = p1.getInitiative(); // take player 1 initiative
+          int initP2 = p2.getInitiative(); // take player 2 initiative
 
           if (initP1 < initP2) {
               leadPlayer = 1;
           }
 
-          do {
-              System.out.println("-----------------------------------------------------------------");
-              System.out.println("                           round : "+ settings.playerround());
+          else if (initP1 == initP2)
+          {
+             double PlayerStart = Math.random();
 
+             if (PlayerStart <= 0.5) {
+                 leadPlayer = 0;
+             }
+          }
+
+          do
+          {
               if (leadPlayer == 0)
               {
+                  System.out.println();
+                  System.out.println("-----------------------------------------------------------------");
+                  System.out.println("                           round : "+ (settings.playerround() + 1));
+
                   attack(p1, p2);
                   settings.GlobalRound++;
                   leadPlayer = 1;
-                  System.out.println(p1.name + " attaque :");
+
+                  System.out.println(p1.getName() + " attack :");
                   System.out.println(p1);
-                  System.out.println("P2 : "+ p2.life + "HP");
+                  System.out.println(p1.getName() +" (P1) : " + p1.getLife() + "HP");
+                  System.out.println(p2.getName() +" (P2) : " + p2.getLife() + "HP");
               }
 
-              if (p2.life <= 0 || p1.life <= 0) {
+              if (p2.getLife() <= 0.F || p1.getLife() <= 0.F) {
                   break; //end game
               }
-              System.out.println();
-              System.out.println("-----------------------------------------------------------------");
 
               if (leadPlayer == 1)
               {
+                  System.out.println();
+                  System.out.println("-----------------------------------------------------------------");
+
                   attack(p2, p1);
                   settings.GlobalRound++;
                   leadPlayer = 0;
+
+                  System.out.println(p2.getName() + " attack :");
+                  System.out.println(p2);
+                  System.out.println(p1.getName() +" (P1) : " + p1.getLife() + "HP");
+                  System.out.println(p2.getName() +" (P2) : " + p2.getLife() + "HP");
               }
+          } while (p1.getLife() > 0 && p2.getLife() > 0);
 
-              System.out.println(p2.name + " attaque :");
-              System.out.println(p2);
-              System.out.println("P1 : " + p1.life + "HP");
+          if (p1.getLife() > p2.getLife())
+          {
+              System.out.println();
+              System.out.println("------------------------Fight ended--------------------------");
+              System.out.println(p1.getName() + " (" + p1.getType() + ") wins !");
+          }
 
-          } while (p1.life > 0 && p2.life > 0);
+          else
+          {
+              System.out.println();
+              System.out.println("------------------------Fight ended--------------------------");
+              System.out.println(p2.getName() + " (" + p2.getType() + ") wins !");
+          }
 
           System.out.println();
 
-          if (p1.life > p2.life) {
-              System.out.println();
-              System.out.println("------------------------Fight ended--------------------------");
-              System.out.println(p1.name + " (" + p1.type + ") wins !");
-          } else {
-              System.out.println();
-              System.out.println("------------------------Fight ended--------------------------");
-              System.out.println(p2.name + " (" + p2.type + ") wins !");
-          }
-
           settings.resetCharactersInfo();
+          settings.GlobalRound = 0;
       }
 
-      else { // start == 2 (Quit)
+      else // start == 2 (Quit)
+      {
           settings.end = true;
           return;
       }
@@ -216,20 +301,24 @@ public class Main
       defender.damageMe((int) attacker.getDamage(settings.playerround()));
    }
 
+   /**---------------------Settings-----------------**/
+
    static void settings()
    {
        System.out.println();
-       System.out.println("---------------------------------_--");
-       System.out.println("| Settings :                       |");
-       System.out.println("| 1. Show character informations   |");
-       System.out.println("| 2. Show characters list          |");
-       System.out.println("| 3. Remove a character            |");
-       System.out.println("| 4. Return to main menu           |");
-       System.out.println("----------------------------_-------");
+       System.out.println("-----------------------------------------");
+       System.out.println("| Settings :                            |");
+       System.out.println("| 1. Show character informations        |");
+       System.out.println("| 2. Show characters list               |");
+       System.out.println("| 3. Remove a character                 |");
+       System.out.println("| 4. Change character's characteristics |");
+       System.out.println("| 5. Reset character                    |");
+       System.out.println("| 6. Return to main menu                |");
+       System.out.println("-----------------------------------------");
 
        int result = 0;
 
-       while (result < 1 || result > 4)
+       while (result < 1 || result > 6)
        {
            System.out.print("-> ");
            result = scanner.nextInt();
@@ -270,6 +359,7 @@ public class Main
            }
 
            System.out.println();
+
            settings.showAllCharaters();
        }
 
@@ -317,7 +407,67 @@ public class Main
            }
        }
 
-       if (result == 4) {
+       if (result == 4)
+       {
+           while (settings.archetypeList.size() == 0)
+           {
+               System.out.println();
+               System.out.println("Characters list empty.");
+               System.out.println("------------------------------------------");
+               System.out.println("| Choose the number's character :        |");
+               System.out.println("| 1. Warrior                             |");
+               System.out.println("| 2. Wizard                              |");
+               System.out.println("| 3. Thief                               |");
+               System.out.println("------------------------------------------");
+              int  playerChoose = scanner.nextInt();
+               while (playerChoose < 1  || playerChoose > 3)
+               {
+                   System.out.print("-> ");
+
+                   playerChoose = scanner.nextInt();
+               }
+
+               createCharacter(playerChoose);
+           }
+
+           System.out.println();
+           System.out.println("Indicate the character number :");
+           settings.showAllCharaters();
+
+           result = 0;
+
+           while (result < 0 || result > settings.archetypeList.size())
+           {
+               System.out.print("-> ");
+               result = scanner.nextInt()-1;
+           }
+           settings.ChangeCharacteristic(result);
+       }
+
+       if(result == 5){
+
+           while (settings.archetypeList.size() == 0) {
+               System.out.println();
+               System.out.println("Characters list empty.");
+               menu();
+           }
+
+           System.out.println();
+           System.out.println("Indicate the character number :");
+           settings.showAllCharaters();
+
+           result = 0;
+
+           while (result < 0 || result > settings.archetypeList.size())
+           {
+               System.out.print("-> ");
+               result = scanner.nextInt();
+           }
+           settings.resetCharactersInfo();
+       }
+
+       if (result == 6) {
+           System.out.println();
            menu();
        }
    }

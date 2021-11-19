@@ -1,60 +1,84 @@
 package fr.coding.characters;
 
-import fr.coding.main.PseudoRandomGenerator;
+import java.util.Scanner;
 
-public class Thief extends Archetype {
-    private int critic_damage  ;
+public class Thief extends Archetype
+{
+    static int critic_damage;
     float damageReset = damage;
+    public float defaultLuck = 0.5f;
+    float luck = defaultLuck;
 
-    public int getInitiative() {
-        initiative = initiative + 2;
-        return initiative;
+    public void setInitiative(int newinitiative)  // change initiative
+    {
+        initiative = newinitiative;
+
     }
 
-    public boolean getDodge() {
+    public void setLuck(int newluck){ //change luck
+            this.luck = newluck;
+    }
 
+
+    public boolean getDodge() //give luck dodge
+    {
         double value = Math.random();
 
+        return value > luck;
+    }
 
-        if (value > 0.5) {
-            return true;
+    public int CriticDamage() //calculation of critical damage with luck to make a crit
+    {
+        double value = Math.random();
+        boolean Crit  = false;
+        if (value > luck && Crit != true) {
+            Crit = true;
+            return critic_damage = 2;
+        }else if(value > luck && Crit == true){
+            Crit = false;
+            return critic_damage = 1;
         }
 
         else {
-            return false;
+            Crit = false;
+            return critic_damage = 1;
         }
     }
 
-    public int CriticDamage() {
-
-       // PseudoRandomGenerator randomNumber = new PseudoRandomGenerator();
-        double value = Math.random();
-
-
-        if (value > 0.5) {
-            return critic_damage  =2;
-        }
-        else {
-            return critic_damage=1;
-        }
-
-    }
-
-    public float getDamage(int DefaultVar) {
-
+    public float getDamage(int DefaultVar) //give damage
+    {
         damage = damageReset;
         damage *= CriticDamage();
-        return damage;
 
+        return damage;
     }
 
-    public void damageMe(int damage) {
-       if(getDodge()== true){
+    public void damageMe(int damage)  //receive damage
+    {
+        float life = getLife();
+
+       if (getDodge()) {
            life -= 0;
-       }else{
+       }
+
+       else {
            life -= damage;
        }
 
+       setLife(life);
+    }
+
+    public void changeSettings(){ //change character's characteristics
+       super.changeSettings();
+        Scanner scanner = new Scanner(System.in);
+            System.out.println("luck's character :");
+            int  newLuck = scanner.nextInt();
+            setLuck(newLuck);
+    }
+
+    public void resetSettings(){
+        super.resetSettings();
+        setLuck((int) defaultLuck);
     }
 
 }
